@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <nav>
+        <h2>Mini store</h2>
+        <div>
+            <a href="#">Home</a>
+            <a href="#products">Shop</a>
+            <a href="#">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Cart (<span id="cart-count">0</span>)
+            </a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div>
+            <h1>Discover Amazing Products</h1>
+            <p>Find the best products at the best prices.</p>
+            <button onclick="scrollToProducts()">
+                Shop Now
+            </button>
+
+        </div>
+    </section>
+
+    <section id="products">
+        <h2>Our Products</h2>
+        <input type="text" id="search" placeholder="Search products...">
+        <select id="category">
+            <option value="all">All Categories</option>
+            <option value="men's clothing">Men's Clothing</option>
+            <option value="women's clothing">Women's Clothing</option>
+            <option value="jewelery">Jewelery</option>
+            <option value="electronics">Electronics</option>
+        </select>
+
+        <div id="product-container"></div>
+
+    </section>
+
+    <footer>
+
+        <h3>MiniStore</h3>
+        <p>Email: ministore@gmail.com</p>
+        <p>Phone: +91 1234567890</p>
+        <p>© 2026 MiniStore</p>
+
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
