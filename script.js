@@ -1,12 +1,31 @@
 let products = [];
 let cart = [];
 
-fetch("https://fakestoreapi.com/products")
-    .then(res => res.json())
-    .then(data => {
-        products = data;
+let container = document.getElementById("product-container");
+async function getProducts() {
+    container.innerHTML = `
+        <p class="loading">Loading products...</p> 
+        `;
+    try {
+        let response = await fetch("https://fakestoreapi.com/poducts");
+        if (!response.ok) {throw new Error("Failed to fetch products");}
+        products = await response.json();
         displayProducts(products);
-    });
+    } 
+    catch (error) {
+        container.innerHTML = `
+            <div class="message">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <h3>Something went wrong</h3>
+                <p>Unable to load products.</p>
+                <button onclick="getProducts()">
+                    Try Again
+                </button>
+            </div>
+        `;
+    }
+}
+getProducts();
 
 
 function getStars(rating) {
@@ -23,8 +42,18 @@ function getStars(rating) {
 
 
 function displayProducts(data) {
-    let container = document.getElementById("product-container");
     container.innerHTML = "";
+    if (data.length === 0) {
+        container.innerHTML = `
+            <div class="message">
+                <i class="fa-solid fa-box-open"></i>
+                <h3>No Products Found</h3>
+                <p>Try searching for something else.</p>
+            </div>
+        `;
+        return;
+    }
+
     data.forEach(product => {
         container.innerHTML += `
         <div class="card">
@@ -32,10 +61,10 @@ function displayProducts(data) {
             <h3>${product.title}</h3>
             <p>${product.category}</p>
             <h4>$${product.price}</h4>
-           <p class="rating">
-           ${getStars(product.rating.rate)}
-           <span>${product.rating.rate}</span>
-           </p>
+            <p class="rating">
+                ${getStars(product.rating.rate)}
+                <span>${product.rating.rate}</span>
+            </p>
 
             <div class="quantity">
                 <button onclick="changeQuantity(${product.id}, -1)">
@@ -47,7 +76,9 @@ function displayProducts(data) {
                 </button>
             </div>
 
-            <button class="btn-cart" onclick="addToCart(${product.id})">
+            <button
+                class="btn-cart"
+                onclick="addToCart(${product.id})">
                 <i class="fa-solid fa-cart-shopping"></i>
                 Add to Cart
             </button>
@@ -55,6 +86,15 @@ function displayProducts(data) {
         `;
     });
 }
+
+
+document.getElementById("search").addEventListener("input", function () {
+    let value = this.value.toLowerCase();
+    let result = products.filter(product =>
+        product.title.toLowerCase().includes(value)
+    );
+    displayProducts(result);
+});
 
 
 function changeQuantity(id, value) {
@@ -77,7 +117,6 @@ function addToCart(id) {
         product: product,
         quantity: quantity
     });
-
     document.getElementById("cart-count").innerText = cart.length;
     alert(quantity + " " + product.title + " added to cart!");
 }
