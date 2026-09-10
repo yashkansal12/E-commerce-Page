@@ -7,7 +7,7 @@ async function getProducts() {
         <p class="loading">Loading products...</p> 
         `;
     try {
-        let response = await fetch("https://fakestoreapi.com/poducts");
+        let response = await fetch("https://fakestoreapi.com/products");
         if (!response.ok) {throw new Error("Failed to fetch products");}
         products = await response.json();
         displayProducts(products);
