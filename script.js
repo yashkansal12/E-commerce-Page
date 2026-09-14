@@ -23,6 +23,11 @@ async function getProducts() {
     try {
         let response = await fetch("https://fakestoreapi.com/products");
         if (!response.ok) { throw new Error("Failed to fetch products"); }
+<<<<<<< HEAD
+=======
+        if (!response.ok) {throw new Error("Failed to fetch products");}
+        
+>>>>>>> 1671c6d8b8076208ad55f446a439f5c20dd09c81
         products = await response.json();
         displayProducts(products);
     }
