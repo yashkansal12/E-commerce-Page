@@ -22,11 +22,7 @@ async function getProducts() {
         `;
     try {
         let response = await fetch("https://fakestoreapi.com/products");
-<<<<<<< HEAD
         if (!response.ok) { throw new Error("Failed to fetch products"); }
-=======
-        if (!response.ok) {throw new Error("Failed to fetch products");}
->>>>>>> 391828a059ddb63869458f1abac36f6e1658d261
         products = await response.json();
         displayProducts(products);
     }
@@ -117,16 +113,86 @@ function displayProducts(data) {
 
 
 
+
 let search = document.getElementById("search");
-if (search) {
-    search.addEventListener("input", function () {
-        let value = this.value.toLowerCase();
-        let result = products.filter(product =>
-            product.title.toLowerCase().includes(value)
-        );
-        displayProducts(result);
+let category = document.getElementById("category");
+let sort = document.getElementById("sort");
+
+function filterProducts() {
+    let searchValue = search ? search.value.toLowerCase() : "";
+    let categoryValue = category ? category.value : "all";
+    let sortValue = sort ? sort.value : "default";
+
+    let result = products.filter(product => {
+        let matchesSearch = product.title.toLowerCase().includes(searchValue);
+        let matchesCategory = categoryValue === "all" || product.category === categoryValue;
+        return matchesSearch && matchesCategory;
     });
+
+    if (sortValue === "price-high") {
+        result.sort((a, b) => b.price - a.price);
+    } else if (sortValue === "price-low") {
+        result.sort((a, b) => a.price - b.price);
+    } else if (sortValue === "name-az") {
+        result.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortValue === "name-za") {
+        result.sort((a, b) => b.title.localeCompare(a.title));
+    } else if (sortValue === "category") {
+        result.sort((a, b) => a.category.localeCompare(b.category));
+    } else if (sortValue === "rating") {
+        result.sort((a, b) => b.rating.rate - a.rating.rate);
+    }
+
+    displayProducts(result);
 }
+
+if (search) {
+    search.addEventListener("input", filterProducts);
+}
+
+if (category) {
+    category.addEventListener("change", filterProducts);
+}
+
+if (sort) {
+    sort.addEventListener("change", filterProducts);
+}
+
+
+
+
+// let search = document.getElementById("search");
+// let category = document.getElementById("category");
+// function filterProducts() {
+//     let searchValue = search ? search.value.toLowerCase() : "";
+//     let categoryValue = category ? category.value : "all";
+//     let result = products.filter(product => {
+//         let matchesSearch = product.title.toLowerCase().includes(searchValue);
+//         let matchesCategory = categoryValue === "all" || product.category === categoryValue;
+//         return matchesSearch && matchesCategory;
+//     });
+//     displayProducts(result);
+// }
+// if (search) {
+//     search.addEventListener("input", filterProducts);
+// }
+// if (category) {
+//     category.addEventListener("change", filterProducts);
+// }
+
+
+
+// let search = document.getElementById("search");
+// if (search) {
+//     search.addEventListener("input", function () {
+//         let value = this.value.toLowerCase();
+//         let result = products.filter(product =>
+//             product.title.toLowerCase().includes(value)
+//         );
+//         displayProducts(result);
+//     });
+// }
+
 
 
 function changeQuantity(id, value) {
